@@ -1,5 +1,5 @@
 import json
-import urllib2
+from urllib.request import urlopen
 from os import sep
 
 #HOST="http://sync-server.appspot.com/test"
@@ -16,7 +16,7 @@ PLATFORM="java"  # java|android|objc|dotnet
 url= "%s?target=%s&host=%s&endPoint=%s&port=80&header=no&package=%s" % (HOST,PLATFORM,TARGET, ENDPOINTNAME, PACKAGE)
 print(url)
 
-f = urllib.urlopen(url)
+f = urlopen(url)
 result = json.load(f)
 
 #result = json.load(open('resources.txt', 'r'))
