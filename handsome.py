@@ -1,5 +1,5 @@
 import json
-import urllib
+import urllib2
 from os import sep
 
 #HOST="http://sync-server.appspot.com/test"
