@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 import json
 import argparse
 import os
@@ -9,13 +11,13 @@ from base64 import b64decode
 
 parser = argparse.ArgumentParser(description='Handsome Service Code Generator')
 
-parser.add_argument('-t', '--target',nargs=1,
+parser.add_argument('-t', '--target',nargs=1,required=True,
                    help=' target handsome server address ie:aott.nmdapps.com')
 
-parser.add_argument('-s', '--service',nargs=1,
+parser.add_argument('-s', '--service',nargs=1,required=True,
                    help=' target handsome service Name ie:AOTTService')
 
-parser.add_argument('-p', '--package',nargs=1,
+parser.add_argument('-p', '--package',nargs=1,default="com.handsome.services",
                    help='desired package named, used only if platform is android|java ie:com.nomad.aottservice')
 
 parser.add_argument('-c', '--platform',default="objc",nargs=1,
