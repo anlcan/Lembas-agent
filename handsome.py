@@ -1,36 +1,42 @@
 import json
 import argparse
+import os
+
+from shutil import rmtree
 
 from urllib.request import urlopen
-from os import sep
 from base64 import b64decode
-from os import makedirs
 
+parser = argparse.ArgumentParser(description='Handsome Service Code Generator')
 
+parser.add_argument('-t', '--target',nargs=1,
+                   help=' target handsome server address ie:aott.nmdapps.com')
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                   help='an integer for the accumulator')
-parser.add_argument('--sum', dest='accumulate', action='store_const',
-                   const=sum, default=max,
-                   help='sum the integers (default: find the max)')
+parser.add_argument('-s', '--service',nargs=1,
+                   help=' target handsome service Name ie:AOTTService')
+
+parser.add_argument('-p', '--package',nargs=1,
+                   help='desired package named, used only if platform is android|java ie:com.nomad.aottservice')
+
+parser.add_argument('-c', '--platform',default="objc",nargs=1,
+                   help='platform to which code should be generated  java|android|objc|dotnet')
 
 args = parser.parse_args()
-print(args.accumulate(args.integers))
+print(args)
 
 #HOST="http://sync-server.appspot.com/test"
 HOST="http://moxo.sync-server.appspot.com/"
 #HOST="http://localhost:8888/"
 
 
-TARGET="aott.nmdapps.com"
-ENDPOINTNAME="AOTTService"
-PACKAGE="com.nomad.aottservice"
-PLATFORM="java"  # java|android|objc|dotnet
+TARGET=args.target[0]
+ENDPOINTNAME=args.service[0]
+PACKAGE=args.package[0]
+PLATFORM=args.platform[0]
 
-
+# TODO check missing parameters ?
 url= "%s?target=%s&host=%s&endPoint=%s&port=80&header=no&package=%s&project=%s" % (HOST,PLATFORM,TARGET, ENDPOINTNAME, PACKAGE, ENDPOINTNAME)
-print(url)
+print("fetching code", url)
 
 f = urlopen(url)
 response = f.readall().decode("utf-8")
@@ -38,13 +44,23 @@ result = json.loads(response)
 
 #result = json.load(open('resources.txt', 'r'))
 
-package = "src"+sep+PACKAGE.replace(".", sep)+sep
-makedirs(package)
+package = ENDPOINTNAME+os.sep
+if PLATFORM in ['android', 'java']:
+	package = "src"+os.sep+PACKAGE.replace(".", os.sep)+os.sep
 
-for java in result:
-    if 'source' in java:
-        code = b64decode(java['source'])
-        name = package+java['fileName']
+try:
+    #with open(package): pass
+    # TODO backup generated directory before removing
+    rmtree(package)
+except IOError:
+   print ('Oh dear.')
+
+os.makedirs(package)
+
+for classFile in result:
+    if 'source' in classFile:
+        code = b64decode(classFile['source'])
+        name = package+classFile['fileName']
         t = open(name, 'w+')
         t.write(str(code,"utf-8"))
         t.close()

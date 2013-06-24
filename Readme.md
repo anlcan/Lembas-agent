@@ -1,3 +1,4 @@
-Must be used with python3.
+Read parameters before using with `python3 handsome.py -h`
 
-Edit parameters before use!
+DOES NOT BACKUP CURRENT FILES!
+
