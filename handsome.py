@@ -16,8 +16,8 @@ DEFAULT_HOST="http://moxo.sync-server.appspot.com/"
 
 parser = argparse.ArgumentParser(description='Handsome Service Code Generator')
 
-parser.add_argument("-h", "--host", nargs=1, default=DEFAULT_HOST,
-                    help="handsome codegen server addres, must have a trailing / ie:http://moxo.sync-server.appspot.com or http://localhost:8080/")
+parser.add_argument("-g", "--generator", nargs=1, default=DEFAULT_HOST,
+                    help="handsome code generator server address, must have a trailing / ie:http://moxo.sync-server.appspot.com or http://localhost:8080/")
 
 parser.add_argument('-t', '--target',nargs=1,required=True,
                    help=' target handsome server address ie:aott.nmdapps.com')
