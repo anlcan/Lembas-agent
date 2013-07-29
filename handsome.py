@@ -40,7 +40,7 @@ TARGET=args.target[0]
 ENDPOINTNAME=args.service[0]
 PACKAGE=args.package[0]
 PLATFORM=args.platform[0]
-HOST=args.host[0]
+HOST=args.generator[0]
 
 # TODO check missing parameters ?
 url= "%s?target=%s&host=%s&endPoint=%s&port=80&header=no&package=%s&project=%s" % (HOST,PLATFORM,TARGET, ENDPOINTNAME, PACKAGE, ENDPOINTNAME)
@@ -56,12 +56,13 @@ package = ENDPOINTNAME+os.sep
 if PLATFORM in ['android', 'java']:
 	package = "src"+os.sep+PACKAGE.replace(".", os.sep)+os.sep
 
+print ('backing up...')
 try:
     #with open(package): pass
     # TODO backup generated directory before removing
     rmtree(package)
 except IOError:
-   print ('Oh dear.')
+    print ('done')
 
 os.makedirs(package)
 
